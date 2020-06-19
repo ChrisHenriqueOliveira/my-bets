@@ -98,8 +98,19 @@ export const BetContainer = styled.div`
   margin-top: 16px;
   border-radius: 10px;
 
-  h1 {
-    margin-bottom: 16px;
+  .top-info {
+    display: flex;
+    justify-content: space-between;
+
+    h1 {
+      margin-bottom: 16px;
+    }
+    svg {
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      color: #000;
+    }
   }
 `;
 
@@ -110,8 +121,6 @@ export const ItemValue = styled.button<ItemProps>`
   border-radius: 50%;
   background-color: #fff;
   margin: 8px;
-
-
 
   ${props =>
     props.isSelected &&

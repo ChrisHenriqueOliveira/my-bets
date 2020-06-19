@@ -2,6 +2,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useCallback } from 'react';
 
+import { IoIosTrash, IoMdTrash } from 'react-icons/io';
 import Menu from '../../components/Menu';
 
 import {
@@ -80,7 +81,14 @@ const Home: React.FC = () => {
     setMyBets([...myBets, []]);
   }, [myBets]);
 
-  const handleRemoveBet = useCallback(() => {}, []);
+  const handleRemoveBet = useCallback(
+    indexToRemove => {
+      if (myBets.length !== 1) {
+        setMyBets(myBets.filter((item, index) => index !== indexToRemove));
+      }
+    },
+    [myBets],
+  );
 
   return (
     <Container>
@@ -107,7 +115,11 @@ const Home: React.FC = () => {
             {myBets.map((bet, index) => {
               return (
                 <BetContainer key={index}>
-                  <h1>{`Jogo ${index + 1}`}</h1>
+                  <div className="top-info">
+                    <h1>{`Jogo ${index + 1}`}</h1>
+                    <IoMdTrash onClick={() => handleRemoveBet(index)} />
+                  </div>
+
                   <div>{renderBetItems(bet, index)}</div>
                 </BetContainer>
               );
