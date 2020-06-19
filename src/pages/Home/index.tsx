@@ -37,32 +37,32 @@ interface Results {
 const Home: React.FC = () => {
   const [myBets, setMyBets] = useState([[]]);
   const [resultGames, setResultGames] = useState<Results[]>([
-    {
-      gamenumber: '1981',
-      results: [
-        '01',
-        '02',
-        '03',
-        '04',
-        '05',
-        '06',
-        '07',
-        '12',
-        '13',
-        '15',
-        '17',
-        '20',
-        '23',
-        '24',
-        '25',
-      ],
-      date: '17/06/2020',
-      quinzeacertos: `5 ganhadores - R$430519.74`,
-      quatorzeacertos: `5 ganhadores - R$430519.74`,
-      trezeacertos: `5 ganhadores - R$430519.74`,
-      dozeacertos: `5 ganhadores - R$430519.74`,
-      onzeacertos: `5 ganhadores - R$430519.74`,
-    },
+    // {
+    //   gamenumber: '1981',
+    //   results: [
+    //     '01',
+    //     '02',
+    //     '03',
+    //     '04',
+    //     '05',
+    //     '06',
+    //     '07',
+    //     '12',
+    //     '13',
+    //     '15',
+    //     '17',
+    //     '20',
+    //     '23',
+    //     '24',
+    //     '25',
+    //   ],
+    //   date: '17/06/2020',
+    //   quinzeacertos: `5 ganhadores - R$430519.74`,
+    //   quatorzeacertos: `5 ganhadores - R$430519.74`,
+    //   trezeacertos: `5 ganhadores - R$430519.74`,
+    //   dozeacertos: `5 ganhadores - R$430519.74`,
+    //   onzeacertos: `5 ganhadores - R$430519.74`,
+    // },
   ]);
 
   const [gameId, setGameId] = useState('');
@@ -74,28 +74,28 @@ const Home: React.FC = () => {
   // RESULTS CONTROLLERS =========================================================
 
   const handleSearchGame = useCallback(() => {
-    // const repeatedResult = resultGames.filter(
-    //   item => item.gamenumber === gameId,
-    // );
-    // if (repeatedResult.length === 0) {
-    //   fetch(
-    //     `https://apiloterias.com.br/app/resultado?loteria=lotofacil&token=[SEU_TOKEN]&concurso=${gameId}`,
-    //   )
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       const newGame: Results = {
-    //         gamenumber: gameId,
-    //         results: data.dezenas,
-    //         date: format(parseISO(data.data_concurso), 'dd/MM/yyyy'),
-    //         quinzeacertos: `${data.premiacao[0].quantidade_ganhadores} ganhadores - $${data.premiacao[0].valor_total}`,
-    //         quatorzeacertos: `${data.premiacao[1].quantidade_ganhadores} ganhadores - $${data.premiacao[1].valor_total}`,
-    //         trezeacertos: `${data.premiacao[2].quantidade_ganhadores} ganhadores - $${data.premiacao[2].valor_total}`,
-    //         dozeacertos: `${data.premiacao[3].quantidade_ganhadores} ganhadores - $${data.premiacao[3].valor_total}`,
-    //         onzeacertos: `${data.premiacao[4].quantidade_ganhadores} ganhadores - $${data.premiacao[4].valor_total}`,
-    //       };
-    //       setResultGames([...resultGames, newGame]);
-    //     });
-    // }
+    const repeatedResult = resultGames.filter(
+      item => item.gamenumber === gameId,
+    );
+    if (repeatedResult.length === 0) {
+      fetch(
+        `https://apiloterias.com.br/app/resultado?loteria=lotofacil&token=[SEU_TOKEN]&concurso=${gameId}`,
+      )
+        .then(response => response.json())
+        .then(data => {
+          const newGame: Results = {
+            gamenumber: gameId,
+            results: data.dezenas,
+            date: format(parseISO(data.data_concurso), 'dd/MM/yyyy'),
+            quinzeacertos: `${data.premiacao[0].quantidade_ganhadores} ganhadores - $${data.premiacao[0].valor_total}`,
+            quatorzeacertos: `${data.premiacao[1].quantidade_ganhadores} ganhadores - $${data.premiacao[1].valor_total}`,
+            trezeacertos: `${data.premiacao[2].quantidade_ganhadores} ganhadores - $${data.premiacao[2].valor_total}`,
+            dozeacertos: `${data.premiacao[3].quantidade_ganhadores} ganhadores - $${data.premiacao[3].valor_total}`,
+            onzeacertos: `${data.premiacao[4].quantidade_ganhadores} ganhadores - $${data.premiacao[4].valor_total}`,
+          };
+          setResultGames([...resultGames, newGame]);
+        });
+    }
   }, [gameId, resultGames]);
 
   const handleRemoveResult = useCallback(
@@ -212,7 +212,7 @@ const Home: React.FC = () => {
               <SearchInput>
                 <IoIosSearch />
                 <input
-                  type="text"
+                  type="number"
                   name="gameid"
                   placeholder="Nº do concurso"
                   onChange={e => setGameId(e.currentTarget.value)}
