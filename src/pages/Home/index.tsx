@@ -225,6 +225,20 @@ const Home: React.FC = () => {
     [myBets, valuesChanged],
   );
 
+  const handleAddRandomBet = useCallback(() => {
+    const randomValues: string[] = [];
+
+    do {
+      const value = Math.floor(Math.random() * (26 - 1)) + 1;
+
+      if (!randomValues.includes(value.toString())) {
+        randomValues.push(value.toString());
+      }
+    } while (randomValues.length < 15);
+
+    setMyBets([...myBets, randomValues as never]);
+  }, [myBets]);
+
   const handleAddBet = useCallback(() => {
     setMyBets([...myBets, []]);
   }, [myBets]);
@@ -333,7 +347,10 @@ const Home: React.FC = () => {
           <GamesBet>
             <h1>Jogos apostados</h1>
 
-            <Button onClick={handleAddBet}>Adicionar Jogo</Button>
+            <Button onClick={handleAddRandomBet}>
+              Adicionar jogo aleatório
+            </Button>
+            <Button onClick={handleAddBet}>Adicionar jogo em branco</Button>
 
             {myBets.map((bet, index) => {
               return (
