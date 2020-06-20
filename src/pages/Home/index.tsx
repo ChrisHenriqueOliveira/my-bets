@@ -2,11 +2,11 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useCallback } from 'react';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { parseISO, format } from 'date-fns';
 import { IoMdTrash, IoIosSearch } from 'react-icons/io';
 // import { string } from 'yup';
-import { string } from 'yup';
-import Menu from '../../components/Menu';
 
 import {
   Container,
@@ -20,10 +20,12 @@ import {
   GameInfo,
   BetContainer,
   ItemValue,
+  BetResults,
 } from './styles';
 import Button from '../../components/Button';
+import Menu from '../../components/Menu';
 
-interface Results {
+interface GameResults {
   gamenumber: string;
   results: string[];
   date: string;
@@ -34,34 +36,45 @@ interface Results {
   onzeacertos: string;
 }
 
+interface BetResults {
+  game: string;
+  hits: string;
+}
+
 const Home: React.FC = () => {
   const [myBets, setMyBets] = useState([[]]);
-  const [resultGames, setResultGames] = useState<Results[]>([
+  const [resultGames, setResultGames] = useState<GameResults[]>([
+    {
+      gamenumber: '1981',
+      results: [
+        '01',
+        '02',
+        '03',
+        '04',
+        '05',
+        '06',
+        '07',
+        '12',
+        '13',
+        '15',
+        '17',
+        '20',
+        '23',
+        '24',
+        '25',
+      ],
+      date: '17/06/2020',
+      quinzeacertos: `5 ganhadores - R$430519.74`,
+      quatorzeacertos: `5 ganhadores - R$430519.74`,
+      trezeacertos: `5 ganhadores - R$430519.74`,
+      dozeacertos: `5 ganhadores - R$430519.74`,
+      onzeacertos: `5 ganhadores - R$430519.74`,
+    },
+  ]);
+  const [betResults, setBetResults] = useState<BetResults[]>([
     // {
-    //   gamenumber: '1981',
-    //   results: [
-    //     '01',
-    //     '02',
-    //     '03',
-    //     '04',
-    //     '05',
-    //     '06',
-    //     '07',
-    //     '12',
-    //     '13',
-    //     '15',
-    //     '17',
-    //     '20',
-    //     '23',
-    //     '24',
-    //     '25',
-    //   ],
-    //   date: '17/06/2020',
-    //   quinzeacertos: `5 ganhadores - R$430519.74`,
-    //   quatorzeacertos: `5 ganhadores - R$430519.74`,
-    //   trezeacertos: `5 ganhadores - R$430519.74`,
-    //   dozeacertos: `5 ganhadores - R$430519.74`,
-    //   onzeacertos: `5 ganhadores - R$430519.74`,
+    //   game: 'Jogo 1 & Concurso 1981:',
+    //   hits: '8 acertos',
     // },
   ]);
 
@@ -73,6 +86,53 @@ const Home: React.FC = () => {
 
   // RESULTS CONTROLLERS =========================================================
 
+  const handleBetAccuracy = useCallback(() => {
+    const allBetsResults = [];
+
+    const betsLength = myBets.length;
+    const resultsLength = resultGames.length;
+
+    for (let i = 0; i < betsLength; i++) {
+      if (myBets[i].length < 15) {
+        toast.error('❌ Selecione 15 valores em cada jogo!', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return;
+      }
+    }
+
+    for (let i = 0; i < resultsLength; i++) {
+      for (let j = 0; j < betsLength; j++) {
+        let hits = 0;
+
+        for (let k = 0; k < resultGames[i].results.length; k++) {
+          const currentResultValue = parseInt(
+            resultGames[i].results[k],
+            10,
+          ).toString();
+          if (myBets[j].includes(currentResultValue as never)) {
+            hits++;
+          }
+        }
+
+        const newBetResult = {
+          game: `Jogo ${j + 1} no concurso ${resultGames[i].gamenumber}:`,
+          hits: `${hits} acertos.`,
+        };
+
+        allBetsResults.push(newBetResult);
+      }
+    }
+
+    setBetResults(allBetsResults);
+  }, [myBets, resultGames]);
+
   const handleSearchGame = useCallback(() => {
     const repeatedResult = resultGames.filter(
       item => item.gamenumber === gameId,
@@ -83,7 +143,7 @@ const Home: React.FC = () => {
       )
         .then(response => response.json())
         .then(data => {
-          const newGame: Results = {
+          const newGame: GameResults = {
             gamenumber: gameId,
             results: data.dezenas,
             date: format(parseISO(data.data_concurso), 'dd/MM/yyyy'),
@@ -135,7 +195,7 @@ const Home: React.FC = () => {
       const betsVector = myBets;
       const currentVector = betsVector[index];
 
-      if (betsVector.length > 0 && currentVector.length < 15) {
+      if (betsVector.length > 0) {
         const currentValue: never = value.toString() as never;
         const existInBetList = myBets[index].includes(currentValue);
 
@@ -152,7 +212,7 @@ const Home: React.FC = () => {
           betsVector[index] = filteredVector;
 
           setMyBets(betsVector);
-        } else {
+        } else if (currentVector.length < 15) {
           currentVector.push(currentValue);
 
           betsVector[index] = currentVector;
@@ -233,11 +293,13 @@ const Home: React.FC = () => {
                         onKeyDown={() =>
                           setGameInfoOpened(
                             gameInfoOpened === '' ? index.toString() : '',
-                          )}
+                          )
+                        }
                         onClick={() =>
                           setGameInfoOpened(
                             gameInfoOpened === '' ? index.toString() : '',
-                          )}
+                          )
+                        }
                       >
                         Mais informações
                       </span>
@@ -262,7 +324,6 @@ const Home: React.FC = () => {
                       11 acertos: <span>{result.onzeacertos}</span>
                     </h3>
                   </GameInfo>
-                  {console.log(gameInfoOpened)}
                   <div>{renderResultItems(result)}</div>
                 </ResultContainer>
               );
@@ -271,6 +332,8 @@ const Home: React.FC = () => {
 
           <GamesBet>
             <h1>Jogos apostados</h1>
+
+            <Button onClick={handleAddBet}>Adicionar Jogo</Button>
 
             {myBets.map((bet, index) => {
               return (
@@ -288,11 +351,26 @@ const Home: React.FC = () => {
                 </BetContainer>
               );
             })}
-
-            <Button onClick={handleAddBet}>Adicionar Jogo</Button>
+            <Button className="results-button" onClick={handleBetAccuracy}>
+              Calcular acertos
+            </Button>
           </GamesBet>
+
+          <BetResults>
+            <h1>Resultados das apostas</h1>
+
+            {betResults.map((result, index) => (
+              <h2 key={index}>
+                {result.game}
+                <span className={parseInt(result.hits, 10) > 10 ? 'green' : ''}>
+                  {result.hits}
+                </span>
+              </h2>
+            ))}
+          </BetResults>
         </AnimationContainer>
       </Content>
+      <ToastContainer />
     </Container>
   );
 };

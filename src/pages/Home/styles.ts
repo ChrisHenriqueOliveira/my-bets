@@ -4,7 +4,6 @@ import { shade } from 'polished';
 interface ItemProps {
   isSelected: boolean;
 }
-
 interface GameInfoProps {
   isOpened: boolean;
 }
@@ -130,8 +129,12 @@ export const GamesBet = styled.div`
     color: #000;
   }
 
-  button {
+  > button {
     max-width: 300px;
+  }
+
+  .results-button {
+    max-width: 100%;
   }
 `;
 
@@ -241,4 +244,33 @@ export const ItemValue = styled.button<ItemProps>`
     css`
       background-color: #838bc5;
     `}
+`;
+
+export const BetResults = styled.div`
+  display: flex;
+  margin-top: 32px;
+  flex-direction: column;
+
+  h1 {
+    font: 24px Roboto, sans-serif;
+    font-weight: 700;
+    color: #000;
+  }
+
+  h2 {
+    font: 20px Roboto, sans-serif;
+    margin-top: 16px;
+    font-weight: 500;
+    color: #838bc5;
+
+    span {
+      margin-left: 8px;
+      color: #c53030;
+      font-weight: 500;
+    }
+
+    .green {
+      color: green;
+    }
+  }
 `;
