@@ -44,32 +44,32 @@ interface BetResults {
 const Home: React.FC = () => {
   const [myBets, setMyBets] = useState([[]]);
   const [resultGames, setResultGames] = useState<GameResults[]>([
-    {
-      gamenumber: '1981',
-      results: [
-        '01',
-        '02',
-        '03',
-        '04',
-        '05',
-        '06',
-        '07',
-        '12',
-        '13',
-        '15',
-        '17',
-        '20',
-        '23',
-        '24',
-        '25',
-      ],
-      date: '17/06/2020',
-      quinzeacertos: `5 ganhadores - R$430519.74`,
-      quatorzeacertos: `5 ganhadores - R$430519.74`,
-      trezeacertos: `5 ganhadores - R$430519.74`,
-      dozeacertos: `5 ganhadores - R$430519.74`,
-      onzeacertos: `5 ganhadores - R$430519.74`,
-    },
+    // {
+    //   gamenumber: '1981',
+    //   results: [
+    //     '01',
+    //     '02',
+    //     '03',
+    //     '04',
+    //     '05',
+    //     '06',
+    //     '07',
+    //     '12',
+    //     '13',
+    //     '15',
+    //     '17',
+    //     '20',
+    //     '23',
+    //     '24',
+    //     '25',
+    //   ],
+    //   date: '17/06/2020',
+    //   quinzeacertos: `5 ganhadores - R$430519.74`,
+    //   quatorzeacertos: `5 ganhadores - R$430519.74`,
+    //   trezeacertos: `5 ganhadores - R$430519.74`,
+    //   dozeacertos: `5 ganhadores - R$430519.74`,
+    //   onzeacertos: `5 ganhadores - R$430519.74`,
+    // },
   ]);
   const [betResults, setBetResults] = useState<BetResults[]>([
     // {
