@@ -28,9 +28,8 @@ Project developed as part of my personal project ["My Study Projects"](https://g
 2. Typescript;
 3. Eslint;
 4. Prettier;
-5. Router DOM;
-6. Styled Components;
-8. [API Loterias](https://apiloterias.com.br/)
+5. Styled Components;
+6. [API Loterias](https://apiloterias.com.br/)
 
 ## 🚀 Instalação e execução / Installation and execution
 :brazil:
